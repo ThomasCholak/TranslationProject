@@ -230,10 +230,16 @@ TreeNode* R(const std::vector<Token>& tokens, int& variableCount, int& lineNumbe
             std::cout << "Error: Expected ']' on line " << lineNumber << std::endl;
         }
     } else if (tokens[currentIndex].type == "VARIABLEtk" || tokens[currentIndex].type == "INTtk") {
-        node->variableValue = tokens[currentIndex].value;  //
+        node->value = "<R> #." + tokens[currentIndex].value;
         consumeToken(tokens);
+    } else if (tokens[currentIndex].type == "PLUStk" || tokens[currentIndex].type == "MINUStk" ||
+               tokens[currentIndex].type == "MULTtk" || tokens[currentIndex].type == "DIVtk") {
+        node->value = tokens[currentIndex].value;
+        consumeToken(tokens);
+        node->left = R(tokens, variableCount, lineNumber);
+        node->right = R(tokens, variableCount, lineNumber);
     } else {
-        std::cout << "Error: Expected '[' or 'id' or 'integer' on line " << lineNumber << std::endl;
+        std::cout << "Error: Unexpected token on line " << lineNumber << std::endl;
     }
 
     return node;
@@ -509,11 +515,8 @@ void printGlobalVariables() {
 
 
 int main() {
-    std::string code = "let aa = 1 .\n"
-                       "main \n"
-                       "  scan aa .\n"
-                       "  cond ( aa > 0 ) \n"
-                       "    print 1 .\n"
+    std::string code = "main \n"
+                       "  print 3 * 7 / 8 + 5 - - - 4 . \n"
                        "end";
 
     std::vector<Token> tokens = lexer(code);  // tokenizer
