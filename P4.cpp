@@ -9,6 +9,8 @@
 
 #include "P4.h"
 
+std::vector<Variable> variables;
+
 std::vector<Token> lexer(const std::string& input) {
     std::istringstream iss(input);
     std::vector<Token> tokens;
@@ -151,8 +153,8 @@ TreeNode* varList(const std::vector<Token>& tokens, int& variableCount, int& lin
 
                 declaredVariables.insert(variableName);
 
-                node->value = variableName;
-                node->variableValue = variableValue;
+                node->value = "<varList>";
+                node->variableValue = variableName + " " + variableValue;
                 node->variableCount = ++variableCount;
                 node->lineNumber = lineNumber;
                 node->right = varList(tokens, variableCount, lineNumber, declaredVariables);
@@ -466,51 +468,60 @@ void generateCodePreorder(TreeNode* root) {
     if (root->value == "<in>")
         std::cout << "READ " << root->variableValue << std::endl;
 
-    if (root->value == "<block>") {
-        std::cout << "PUSH\nSTACKW 0" << std::endl;
-        //generateBlockCode(root->left);
+    if (root->value == "<varList>") {
+        //std::cout << root->variableValue <<std::endl;
+        variables.push_back({root->variableValue, ""});
+    }
+
+    if (!root->variableValue.empty()) {
         if (root->value == "<out>") {
             std::cout << "WRITE " << root->variableValue << std::endl;
         }
-        std::cout << "STACKR 0\nPOP" << std::endl;
     }
-
-    //if (!root->variableValue.empty()) {
-    //    if (root->value == "<out>") {
-    //        std::cout << "WRITE " << root->variableValue << std::endl;
-    //    }
-    //}
 
     generateCodePreorder(root->left);
     generateCodePreorder(root->right);
+
 }
 
-void generateBlockCode(TreeNode* blockNode) {
-    //generateCodePreorder(blockNode->right);
-    std::cout << blockNode->value << std::endl;
-    std::cout << blockNode->value << std::endl;
+void generateVarListCode(TreeNode* root) {
+    if (root == nullptr) {
+        return;
+    }
+    generateCodePreorder(root->right);
+}
+
+void generateBlockCode(TreeNode* root) {
+    generateCodePreorder(root->left);
+    if (root->value == "<out>") {
+        std::cout << "SUCCESS" << std::endl;
+        return;
+    }
+    generateCodePreorder(root->right);
+    std::cout << root->value << std::endl;
+}
+
+void printGlobalVariables() {
+    for (const auto& variable : variables) {
+        std::cout << variable.name << " " << variable.value << std::endl;
+    }
 }
 
 
 int main() {
-    // Example input string
-    std::string code = "main \n"
-                       "  print 1 .\n"
+    std::string code = "let aa = 1 .\n"
+                       "main \n"
                        "  scan aa .\n"
-                       "  start\n"
-                       "    let aa = 2 .\n"
-                       "    print aa .\n"
-                       "  stop\n"
+                       "  cond ( aa > 0 ) \n"
+                       "    print 1 .\n"
                        "end";
 
-    // Tokenize the input string
-    std::vector<Token> tokens = lexer(code);
+    std::vector<Token> tokens = lexer(code);  // tokenizer
+    TreeNode *root = program(tokens);               // creates tree
 
-    // Build the abstract syntax tree
-    TreeNode *root = program(tokens);
-
-    // Generate code and print to std::cout
-    generateCodePreorder(root);
+    generateCodePreorder(root);                     // creates UMSL machine code
+    std::cout << "STOP" << std::endl;
+    printGlobalVariables();
 
     return 0;
 }
