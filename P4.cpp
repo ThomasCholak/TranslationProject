@@ -175,6 +175,7 @@ TreeNode* exp(const std::vector<Token>& tokens, int& variableCount, int& lineNum
     node->left = M(tokens, variableCount, lineNumber);
 
     if (tokens[currentIndex].type == "PLUStk" || tokens[currentIndex].type == "MINUStk") {
+        node->value = tokens[currentIndex].value;
         consumeToken(tokens);
         node->right = exp(tokens, variableCount, lineNumber);
     }
@@ -230,7 +231,8 @@ TreeNode* R(const std::vector<Token>& tokens, int& variableCount, int& lineNumbe
             std::cout << "Error: Expected ']' on line " << lineNumber << std::endl;
         }
     } else if (tokens[currentIndex].type == "VARIABLEtk" || tokens[currentIndex].type == "INTtk") {
-        node->value = "<R> #." + tokens[currentIndex].value;
+        node->value = "<R>";
+        node->variableValue = tokens[currentIndex].value;
         consumeToken(tokens);
     } else if (tokens[currentIndex].type == "PLUStk" || tokens[currentIndex].type == "MINUStk" ||
                tokens[currentIndex].type == "MULTtk" || tokens[currentIndex].type == "DIVtk") {
@@ -474,8 +476,7 @@ void generateCodePreorder(TreeNode* root) {
     if (root->value == "<in>")
         std::cout << "READ " << root->variableValue << std::endl;
 
-    if (root->value == "<varList>") {
-        //std::cout << root->variableValue <<std::endl;
+    if (root->value == "<varList>") { // saves variables
         variables.push_back({root->variableValue, ""});
     }
 
@@ -490,23 +491,6 @@ void generateCodePreorder(TreeNode* root) {
 
 }
 
-void generateVarListCode(TreeNode* root) {
-    if (root == nullptr) {
-        return;
-    }
-    generateCodePreorder(root->right);
-}
-
-void generateBlockCode(TreeNode* root) {
-    generateCodePreorder(root->left);
-    if (root->value == "<out>") {
-        std::cout << "SUCCESS" << std::endl;
-        return;
-    }
-    generateCodePreorder(root->right);
-    std::cout << root->value << std::endl;
-}
-
 void printGlobalVariables() {
     for (const auto& variable : variables) {
         std::cout << variable.name << " " << variable.value << std::endl;
@@ -516,7 +500,12 @@ void printGlobalVariables() {
 
 int main() {
     std::string code = "main \n"
-                       "  print 3 * 7 / 8 + 5 - - - 4 . \n"
+                       "  print 1 .\n"
+                       "  scan aa .\n"
+                       "  start\n"
+                       "    let aa = 2 .\n"
+                       "    print aa .\n"
+                       "  stop\n"
                        "end";
 
     std::vector<Token> tokens = lexer(code);  // tokenizer
