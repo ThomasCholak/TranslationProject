@@ -468,37 +468,40 @@ TreeNode* RO(const std::vector<Token>& tokens, int& variableCount, int& lineNumb
     return node;
 }
 
-void generateCodePreorder(TreeNode* root) {
+void generateCodePreorder(TreeNode* root, std::ofstream& outputFile) {
     if (root == nullptr) {
         return;
     }
 
-    if (root->value == "<in>")
-        std::cout << "READ " << root->variableValue << std::endl;
+    if (root->value == "<in>") {
+        outputFile << "READ " << root->variableValue << std::endl;
+    }
 
-    if (root->value == "<varList>") { // saves variables
+    if (root->value == "<varList>") {
         variables.push_back({root->variableValue, ""});
     }
 
     if (!root->variableValue.empty()) {
         if (root->value == "<out>") {
-            std::cout << "WRITE " << root->variableValue << std::endl;
+            outputFile << "WRITE " << root->variableValue << std::endl;
         }
     }
 
-    generateCodePreorder(root->left);
-    generateCodePreorder(root->right);
+    generateCodePreorder(root->left, outputFile);
+    generateCodePreorder(root->right, outputFile);
 
 }
 
-void printGlobalVariables() {
+void printGlobalVariables(std::ofstream& outputFile) {
+    outputFile << "STOP" << std::endl;
     for (const auto& variable : variables) {
-        std::cout << variable.name << " " << variable.value << std::endl;
+        outputFile << variable.name << " " << variable.value << std::endl;
     }
 }
 
 
 int main() {
+
     std::string code = "main \n"
                        "  print 1 .\n"
                        "  scan aa .\n"
@@ -508,12 +511,14 @@ int main() {
                        "  stop\n"
                        "end";
 
+    std::ofstream outputFile("output.txt"); // Open the file for writing
+
     std::vector<Token> tokens = lexer(code);  // tokenizer
     TreeNode *root = program(tokens);               // creates tree
 
-    generateCodePreorder(root);                     // creates UMSL machine code
-    std::cout << "STOP" << std::endl;
-    printGlobalVariables();
+    generateCodePreorder(root, outputFile);
+    printGlobalVariables(outputFile);
 
+    outputFile.close();
     return 0;
 }
