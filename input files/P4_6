@@ -1,0 +1,9 @@
+let aa = 1 .
+main 
+  scan aa . 
+  loop ( aa > 0 ) 
+  start
+    print aa .
+    aa ~ aa - 1 .
+  stop
+end
