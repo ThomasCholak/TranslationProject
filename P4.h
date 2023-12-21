@@ -32,10 +32,10 @@ struct TreeNode {
 };
 
 std::vector<Token> lexer(const std::string& input);
-void generateCodePreorder(TreeNode* root) ;
+void generateCodePreorder(TreeNode* root, std::ofstream& outputFile);
 void generateBlockCode(TreeNode* root);
 void generateVarListCode(TreeNode* root);
-void printGlobalVariables();
+void printGlobalVariables(std::ofstream& outputFile);
 
 TreeNode* program(const std::vector<Token>& tokens);
 TreeNode* vars(const std::vector<Token>& tokens, int& variableCount, int& lineNumber, std::set<std::string>& declaredVariables);
@@ -57,5 +57,3 @@ TreeNode* RO(const std::vector<Token>& tokens, int& variableCount, int& lineNumb
 
 
 #endif // PARSER_H
-
-
