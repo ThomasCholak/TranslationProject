@@ -1,0 +1,8 @@
+main 
+  print 1 .
+  scan aa .
+  start
+    let aa = 2 .
+    print aa .
+  stop
+end
