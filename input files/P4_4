@@ -1,0 +1,6 @@
+let aa = 1 .
+main 
+  scan aa .
+  cond ( aa > 0 ) 
+    print 1 .
+end
