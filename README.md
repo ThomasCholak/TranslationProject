@@ -12,3 +12,7 @@ Here is an example input code:
 
 This will produce the following tree (however this is not shown to the user):
 ![preorder traversal](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/ea10e056-9a1a-4252-b92e-783bce074c99)
+
+Then, following the same example, the below .asm file will be generated using the aforementioned input code:
+
+![outputcode](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/5cf55024-9212-4758-bcf3-746b864733f9)
