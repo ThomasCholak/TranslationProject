@@ -11,6 +11,7 @@
 
 std::vector<Variable> variables;
 
+// lexer function to identify keywords and variables names
 std::vector<Token> lexer(const std::string& input) {
     std::istringstream iss(input);
     std::vector<Token> tokens;
@@ -25,6 +26,7 @@ std::vector<Token> lexer(const std::string& input) {
             continue;
         }
 
+        // functions to identify keywords
         if (token == "let") {
             currentToken = {"LETtk", ""};
         } else if (token == "print") {
@@ -48,10 +50,11 @@ std::vector<Token> lexer(const std::string& input) {
             bool isInteger = true;
             for (char c : token) {
                 if (!std::isdigit(c)) {
-                    isInteger = false;
+                    isInteger = false;  // function for identifying integers
                     break;
                 }
             }
+            // below code is to identify operands
             if (isInteger) {
                 currentToken = {"INTtk", token};
             } else if (token == "~") {
@@ -95,6 +98,7 @@ std::vector<Token> lexer(const std::string& input) {
 
 size_t currentIndex = 0;
 
+// initializes the beginning of the BNF structure
 TreeNode* program(const std::vector<Token>& tokens) {
     int variableCount = 0;
     int lineNumber = 1;
@@ -386,6 +390,7 @@ TreeNode* ifStatement(const std::vector<Token>& tokens, int& variableCount, int&
     return node;
 }
 
+// structure for identifying the operands in a BNF
 TreeNode* loop(const std::vector<Token>& tokens, int& variableCount, int& lineNumber, std::set<std::string>& declaredVariables) {
     TreeNode* node = new TreeNode("<loop>");
 
@@ -492,6 +497,7 @@ void generateCodePreorder(TreeNode* root, std::ofstream& outputFile) {
 
 }
 
+// stores variable names into a global variable vector list
 void printGlobalVariables(std::ofstream& outputFile) {
     outputFile << "STOP" << std::endl;
     for (const auto& variable : variables) {
@@ -499,26 +505,54 @@ void printGlobalVariables(std::ofstream& outputFile) {
     }
 }
 
+// main function in order to read Linux file input
+int main(int argc, char *argv[]) {
 
-int main() {
+    std::ifstream inputFile;
+    std::string code;
 
-    std::string code = "main \n"
-                       "  print 1 .\n"
-                       "  scan aa .\n"
-                       "  start\n"
-                       "    let aa = 2 .\n"
-                       "    print aa .\n"
-                       "  stop\n"
-                       "end";
+    if (argc > 2) {
+        std::cerr << "ERROR: only one file allowed.\n";
+    }
+    else if (argc == 2) {
+        inputFile.open(argv[1]);
 
-    std::ofstream outputFile("output.txt"); // Open the file for writing
+        if (!inputFile.is_open()) {
+            std::cerr << "ERROR: could not open File: " << argv[1] << std::endl;
+            return 1;
+        }
+    }
+    if (inputFile.is_open()) {
 
-    std::vector<Token> tokens = lexer(code);  // tokenizer
-    TreeNode *root = program(tokens);               // creates tree
+        std::string fileName = argv[1];
+        std::ofstream outputFile(fileName + ".asm"); // open the file for writing
 
-    generateCodePreorder(root, outputFile);
-    printGlobalVariables(outputFile);
+        std::ostringstream buffer;
+        buffer << inputFile.rdbuf();
+        code = buffer.str();
 
-    outputFile.close();
+        std::vector<Token> tokens = lexer(code);  // tokenizer
+        TreeNode *root = program(tokens);               // creates tree
+
+        generateCodePreorder(root, outputFile);
+        printGlobalVariables(outputFile);
+
+        outputFile.close();
+    }
+    else {
+        std::string user_str;
+        std::cout << "Enter your input code:" << std::endl;
+        std::getline(std::cin, user_str);
+
+        std::ofstream outputFile("a.asm");
+
+        std::vector<Token> tokens = lexer(user_str);  // tokenizer
+        TreeNode *root = program(tokens);               // creates tree
+
+        generateCodePreorder(root, outputFile);
+        printGlobalVariables(outputFile);
+
+        outputFile.close();
+    }
     return 0;
 }
