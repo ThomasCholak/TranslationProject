@@ -1,0 +1,15 @@
+let aa = 1 
+    ab = 2 .
+main 
+  scan aa . 
+  loop ( aa > 0 ) 
+  start
+     ab ~ aa .
+     loop ( ab > 0 )
+     start
+       print ab .
+       ab ~ ab - 1 .
+     stop
+     aa ~ aa - 2 .
+  stop
+end
