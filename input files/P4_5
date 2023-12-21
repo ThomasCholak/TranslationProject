@@ -1,0 +1,7 @@
+let aa = 1 .
+main 
+  scan aa .
+  cond ( aa >= 13 ) 
+    cond ( aa <= 19 )
+      print 1 .
+end
