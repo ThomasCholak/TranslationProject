@@ -1,3 +1,5 @@
+<b> Program Translation Project </b>
+
 This project was create in order to produce a compiler which translates from one coding language to another. The way this is accomplished is by feeding
 input code into a lexical analyzer which differentiates between keywords, variable names, digits, and operands. The lexical analyzer creates a series
 of tokens which are then read into the below BNF:
@@ -24,3 +26,9 @@ After being 'ran' this will then prompt the user for user input (in this example
 
 ![Screenshot 2023-12-21 173756](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/2d1443a3-b851-450c-8e57-1c271d9c77a9)
 
+<b> How to Run </b>
+
+To run this project, you will have to inport the files <i>Makefile</i>, <i>P4.cpp</i>, and <i>P4.h</i> into a Linux.
+
+Upon running the 'make' command to run the Makefile, the <i>comp</i> executable will then be generated.
+![makefilestuff](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/2c67539c-37a8-4200-8935-b450adffb926)
