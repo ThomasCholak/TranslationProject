@@ -32,3 +32,13 @@ To run this project, you will have to inport the files <i>Makefile</i>, <i>P4.cp
 
 Upon running the 'make' command to run the Makefile, the <i>comp</i> executable will then be generated.
 ![makefilestuff](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/2c67539c-37a8-4200-8935-b450adffb926)
+
+We can then run <i>./comp</i> and then enter the name of the file, which will create a '.asm' file with the same name:
+
+![circlinganswerthing](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/cd986a4d-dcfe-4e11-bef4-e2064a48fba6)
+
+However, if no file is entered then it will request user input instead and then generate a file named 'a.asm' instead:
+
+![aasm](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/434dd586-e468-4f10-989d-82330f8a471e)
+
+
