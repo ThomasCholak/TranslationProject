@@ -41,4 +41,5 @@ However, if no file is entered then it will request user input instead and then 
 
 ![aasm](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/434dd586-e468-4f10-989d-82330f8a471e)
 
-
+We can then run the 'vim' command to view the generated code and then copy and paste the code into the aforementioned website
+in order to run our newly generated code (as shown previously).
