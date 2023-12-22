@@ -43,3 +43,12 @@ However, if no file is entered then it will request user input instead and then 
 
 We can then run the 'vim' command to view the generated code and then copy and paste the code into the aforementioned website
 in order to run our newly generated code (as shown previously).
+
+<b> How does this program work?</b>
+
+Essentially, the way this program works is the input code is parsed into tokens with the 'lexer' function.
+
+These token types are then parsed into the BNF structre in order to produce a valid tree. If an input code is not valid
+then an error will be produced into the console and no output code will be returned. Else, the tree will be produced
+and then this code will be implemented into the 'generateCodePreorder' which uses the 'TreeNodes' (found in the header file)
+type and value in order to create the corresponding output to the console.
