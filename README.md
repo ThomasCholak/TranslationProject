@@ -28,7 +28,7 @@ After being 'ran' this will then prompt the user for user input (in this example
 
 <b> How to Run </b>
 
-To run this project, you will have to inport the files <i>Makefile</i>, <i>P4.cpp</i>, and <i>P4.h</i> into a Linux.
+To run this project, you will have to import the files <i>Makefile</i>, <i>P4.cpp</i>, and <i>P4.h</i> into a Linux.
 
 Upon running the 'make' command to run the Makefile, the <i>comp</i> executable will then be generated.
 ![makefilestuff](https://github.com/ThomasCholak/CodeCompilationProject/assets/63080803/2c67539c-37a8-4200-8935-b450adffb926)
