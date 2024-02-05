@@ -1,4 +1,4 @@
-<b> Program Translation Project </b>
+<b> Program Translation Project </b> 
 
 This project was create in order to produce a compiler which translates from one coding language to another. The way this is accomplished is by feeding
 input code into a lexical analyzer which differentiates between keywords, variable names, digits, and operands. The lexical analyzer creates a series
